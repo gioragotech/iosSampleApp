@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ItemsListView: View {
-    @ObservedObject private var viewModel: ItemsListViewModel
+    @StateObject private var viewModel: ItemsListViewModel
+    private var cancellables = Set<AnyCancellable>()
 
     init(viewModel: ItemsListViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -43,6 +45,8 @@ struct ItemsListView: View {
             }
         }.onAppear {
             viewModel.eventSubject.send(.fetchItems)
+        }.onDisappear {
+            viewModel.eventSubject.send(.stopRefreshData)
         }
     }
 }

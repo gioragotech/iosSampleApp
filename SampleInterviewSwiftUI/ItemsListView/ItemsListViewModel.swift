@@ -17,6 +17,7 @@ struct ListItem: Identifiable {
 enum ViewEvent {
     case fetchItems
     case showDetails(String)
+    case stopRefreshData
 }
 
 class ItemsListViewModel: ObservableObject {
@@ -54,6 +55,8 @@ class ItemsListViewModel: ObservableObject {
 
         case .showDetails(let itemId):
             showDetails.send(itemId)
+        case .stopRefreshData:
+            self.repository.stopPolling()
         }
     }
     

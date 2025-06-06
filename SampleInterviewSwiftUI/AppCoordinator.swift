@@ -15,6 +15,9 @@ class AppCoordinator: ObservableObject {
     private let repository: Repository
     private var cancellables = Set<AnyCancellable>()
     
+    // Cache for view models to prevent unnecessary allocations
+    private var itemsListViewModel: ItemsListViewModel?
+    
     init(repository: Repository) {
         self.repository = repository
     }
@@ -22,7 +25,7 @@ class AppCoordinator: ObservableObject {
     // MARK: - View Creation Methods
     
     func createItemsListView() -> ItemsListView {
-        let viewModel = createItemsListViewModel()
+        let viewModel = getOrCreateItemsListViewModel()
         return ItemsListView(viewModel: viewModel)
     }
     
@@ -33,7 +36,11 @@ class AppCoordinator: ObservableObject {
     
     // MARK: - ViewModel Creation Methods
     
-    private func createItemsListViewModel() -> ItemsListViewModel {
+    private func getOrCreateItemsListViewModel() -> ItemsListViewModel {
+        if let existingViewModel = itemsListViewModel {
+            return existingViewModel
+        }
+        
         let viewModel = ItemsListViewModel(repsitory: repository)
         
         // Subscribe to navigation events from the view model
@@ -43,6 +50,7 @@ class AppCoordinator: ObservableObject {
             }
             .store(in: &cancellables)
         
+        itemsListViewModel = viewModel
         return viewModel
     }
     
@@ -64,6 +72,12 @@ class AppCoordinator: ObservableObject {
     
     func navigateToRoot() {
         path = NavigationPath()
+    }
+    
+    // MARK: - Memory Management
+    
+    func clearCache() {
+        itemsListViewModel = nil
     }
 }
 
