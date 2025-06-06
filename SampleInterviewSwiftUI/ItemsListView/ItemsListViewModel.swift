@@ -16,16 +16,18 @@ struct ListItem: Identifiable {
 
 enum ViewEvent {
     case fetchItems
-    case showDetails
+    case showDetails(String)
 }
 
 class ItemsListViewModel: ObservableObject {
     @Published var state: ScreenState<[ListItem]> = .idle
     let eventSubject = PassthroughSubject<ViewEvent, Never>()
+    let showDetails = PassthroughSubject<String, Never>()
     private var cancellables = Set<AnyCancellable>()
     private let repository: Repository
 
     init(repsitory: Repository) {
+        print("init ItemsListViewModel")
         self.repository = repsitory
         eventSubject
             .sink { [weak self] event in
@@ -50,7 +52,13 @@ class ItemsListViewModel: ObservableObject {
                 self?.state = .loaded(listItems)
             }.store(in: &cancellables)
 
-        case .showDetails: break
+        case .showDetails(let itemId):
+            showDetails.send(itemId)
         }
+    }
+    
+    deinit {
+        print("deinit ItemsListViewModel")
+        self.repository.stopPolling()
     }
 }

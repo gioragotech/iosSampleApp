@@ -7,20 +7,34 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    @StateObject private var viewModel = ItemsListViewModel(repsitory: MainRepository())
-    
+struct ItemsListView: View {
+    @ObservedObject private var viewModel: ItemsListViewModel
+
+    init(viewModel: ItemsListViewModel) {
+        self.viewModel = viewModel
+    }
+
     var body: some View {
         VStack {
             switch viewModel.state {
             case .idle:
                 Text("Tap to load items.")
-               // Button("Load Items", action: viewModel.fetchItems)
+            // Button("Load Items", action: viewModel.fetchItems)
             case .loading:
                 ProgressView("Loading...")
             case .loaded(let items):
                 List(items) { item in
-                    Text(item.title)
+                    Button(action: {
+                        print("Tapped on: \(item.title)")
+                        viewModel.eventSubject.send(.showDetails(item.id))
+                    }) {
+                        HStack {
+                            Text(item.title)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
             case .empty:
                 Text("No items found")
@@ -34,5 +48,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ItemsListView(viewModel: ItemsListViewModel(repsitory: MainRepository()))
 }

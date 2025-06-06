@@ -10,6 +10,7 @@ import Foundation
 
 protocol Repository {
     func getItems(withPolling: Bool) -> AnyPublisher<[ItemDto], Error>
+    func stopPolling()
 }
 
 class MainRepository: Repository {
@@ -20,6 +21,7 @@ class MainRepository: Repository {
     private var pollingTask: Task<Void, Never>?
     let poolinItemsPublisher = CurrentValueSubject<[ItemDto], Error>([])
 
+    
     func getItems(withPolling: Bool) -> AnyPublisher<[ItemDto], Error> {
         if withPolling {
             startPolling()
@@ -47,6 +49,7 @@ class MainRepository: Repository {
     }
     
     func stopPolling() {
+        isPolling = false
         self.pollingTask?.cancel()
         pollingTask = nil
     }
