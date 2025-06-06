@@ -63,22 +63,6 @@ class AppCoordinator: ObservableObject {
     func navigateToItemDetails(itemId: String) {
         path.append(NavigationDestination.itemDetails(itemId))
     }
-    
-    func navigateBack() {
-        if !path.isEmpty {
-            path.removeLast()
-        }
-    }
-    
-    func navigateToRoot() {
-        path = NavigationPath()
-    }
-    
-    // MARK: - Memory Management
-    
-    func clearCache() {
-        itemsListViewModel = nil
-    }
 }
 
 // MARK: - Navigation Destination
