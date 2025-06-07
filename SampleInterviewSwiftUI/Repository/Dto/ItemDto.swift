@@ -7,8 +7,24 @@
 
 import Foundation
 
-struct ItemDto {
+struct ItemDto: Codable {
     let id: String
+    let year: String
     let title: String
-    let description: String
+    let poster: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "imdbID"
+        case year = "Year"
+        case title = "Title"
+        case poster = "Poster"
+    }
+}
+
+struct SearchResponse: Codable {
+    let search: [ItemDto]
+
+    enum CodingKeys: String, CodingKey {
+        case search = "Search"
+    }
 }

@@ -11,7 +11,6 @@ import Foundation
 struct ListItem: Identifiable {
     let id: String
     let title: String
-    let description: String
 }
 
 enum ViewEvent {
@@ -39,11 +38,10 @@ class ItemsListViewModel: ObservableObject {
     private func handleEvent(event: ViewEvent) {
         switch event {
         case .fetchItems:
-            repository.getItems(withPolling: true).map({ itemsListDto in
+            repository.getItems(withPolling: false).map({ itemsListDto in
                 itemsListDto.map({ itemDto in
                     ListItem(
-                        id: itemDto.id, title: itemDto.title,
-                        description: itemDto.description)
+                        id: itemDto.id, title: itemDto.title)
                 })
             }).receive(on: DispatchQueue.main).sink { [weak self] completion in
                 if case .failure(let error) = completion {
@@ -59,7 +57,7 @@ class ItemsListViewModel: ObservableObject {
             self.repository.stopPolling()
         }
     }
-    
+
     deinit {
         print("deinit ItemsListViewModel")
         self.repository.stopPolling()

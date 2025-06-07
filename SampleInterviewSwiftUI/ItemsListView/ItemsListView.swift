@@ -52,5 +52,5 @@ struct ItemsListView: View {
 }
 
 #Preview {
-    ItemsListView(viewModel: ItemsListViewModel(repsitory: MainRepository()))
+    ItemsListView(viewModel: ItemsListViewModel(repsitory: MainRepository(networkActions: NetworkActionsImpl())))
 }

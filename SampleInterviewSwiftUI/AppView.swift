@@ -10,7 +10,7 @@ import SwiftUI
 struct AppView: View {
     @StateObject private var coordinator: AppCoordinator
     
-    init(repository: Repository = MainRepository()) {
+    init(repository: Repository = MainRepository(networkActions: NetworkActionsImpl())) {
         self._coordinator = StateObject(wrappedValue: AppCoordinator(repository: repository))
     }
     

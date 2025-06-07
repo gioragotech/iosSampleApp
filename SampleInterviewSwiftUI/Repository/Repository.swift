@@ -20,18 +20,26 @@ class MainRepository: Repository {
     private var isPolling = false
     private var pollingTask: Task<Void, Never>?
     let poolinItemsPublisher = CurrentValueSubject<[ItemDto], Error>([])
+    let networkActions: NetworkActions
 
+    init(networkActions: NetworkActions) {
+        self.networkActions = networkActions
+    }
     
     func getItems(withPolling: Bool) -> AnyPublisher<[ItemDto], Error> {
         if withPolling {
             startPolling()
             return poolinItemsPublisher.eraseToAnyPublisher()
         }
+        
+        return networkActions.fetchMovies().map { response in
+            response.search
+        }.eraseToAnyPublisher()
 
-        return Just([
-            ItemDto(id: "1", title: "x-men", description: "comics moview"),
-            ItemDto(id: "2", title: "x-men 2", description: "comics moview"),
-        ]).setFailureType(to: Error.self).eraseToAnyPublisher()
+//        return Just([
+//            ItemDto(id: "1", title: "x-men", description: "comics moview"),
+//            ItemDto(id: "2", title: "x-men 2", description: "comics moview"),
+//        ]).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
     func startPolling() {
@@ -40,9 +48,9 @@ class MainRepository: Repository {
 
         self.pollingTask = Task {
             while !Task.isCancelled {
-                poolinItemsPublisher.send([ItemDto(id: "2", title: "xxxx", description: "yyyy")])
+               // poolinItemsPublisher.send([ItemDto(id: "2", title: "xxxx", description: "yyyy")])
                 try? await Task.sleep(nanoseconds: 2_000_000_000)
-                poolinItemsPublisher.send([ItemDto(id: "2", title: "xxxx1", description: "hhhhh")])
+              //  poolinItemsPublisher.send([ItemDto(id: "2", title: "xxxx1", description: "hhhhh")])
                 try? await Task.sleep(nanoseconds: 2_000_000_000)
             }
         }
