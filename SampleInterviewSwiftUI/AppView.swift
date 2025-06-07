@@ -10,8 +10,8 @@ import SwiftUI
 struct AppView: View {
     @StateObject private var coordinator: AppCoordinator
     
-    init(repository: Repository = MainRepository(networkActions: NetworkActionsImpl())) {
-        self._coordinator = StateObject(wrappedValue: AppCoordinator(repository: repository))
+    init(container: DIContainer) {
+        self._coordinator = StateObject(wrappedValue: AppCoordinator(container: container))
     }
     
     var body: some View {
@@ -31,5 +31,5 @@ struct AppView: View {
 }
 
 #Preview {
-    AppView()
+    AppView(container: DefaultDIContainer.setup())
 } 

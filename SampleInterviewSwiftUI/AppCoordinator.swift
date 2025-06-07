@@ -12,14 +12,14 @@ import Combine
 class AppCoordinator: ObservableObject {
     @Published var path = NavigationPath()
     
-    private let repository: Repository
+    private let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
     // Cache for view models to prevent unnecessary allocations
     private var itemsListViewModel: ItemsListViewModel?
     
-    init(repository: Repository) {
-        self.repository = repository
+    init(container: DIContainer) {
+        self.container = container
     }
     
     // MARK: - View Creation Methods
@@ -41,6 +41,7 @@ class AppCoordinator: ObservableObject {
             return existingViewModel
         }
         
+        let repository = container.resolve(Repository.self)
         let viewModel = ItemsListViewModel(repsitory: repository)
         
         // Subscribe to navigation events from the view model
@@ -55,6 +56,7 @@ class AppCoordinator: ObservableObject {
     }
     
     private func createItemDetailsViewModel(itemId: String) -> ItemDetailsViewModel {
+        let repository = container.resolve(Repository.self)
         return ItemDetailsViewModel(itemId: itemId, repository: repository)
     }
     
