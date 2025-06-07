@@ -29,5 +29,5 @@ struct ItemDetailsView: View {
 }
 
 #Preview {
-    ItemDetailsView(viewModel: ItemDetailsViewModel(itemId: "sample-id"))
+    ItemDetailsView(viewModel: ItemDetailsViewModel(itemId: "sample-id", repository: MainRepository(networkActions: NetworkActionsImpl())))
 }

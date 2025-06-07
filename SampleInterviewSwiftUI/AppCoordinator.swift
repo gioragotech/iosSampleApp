@@ -55,7 +55,7 @@ class AppCoordinator: ObservableObject {
     }
     
     private func createItemDetailsViewModel(itemId: String) -> ItemDetailsViewModel {
-        return ItemDetailsViewModel(itemId: itemId)
+        return ItemDetailsViewModel(itemId: itemId, repository: repository)
     }
     
     // MARK: - Navigation Methods

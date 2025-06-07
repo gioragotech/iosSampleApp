@@ -10,8 +10,14 @@ import Combine
 
 class ItemDetailsViewModel: ObservableObject {
     let itemId: String
-   
-    init(itemId: String) {
+    let repository: Repository
+    @Published var state: ScreenState<[ListItem]> = .idle
+    let eventSubject = PassthroughSubject<ViewEvent, Never>()
+    
+    init(itemId: String, repository: Repository) {
         self.itemId = itemId
+        self.repository = repository
     }
+    
+    
 }
