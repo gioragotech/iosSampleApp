@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2E73D1572DF41C720047A79B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2E73D1562DF41C720047A79B /* Alamofire */; };
+		2E73D2612DF41FE00047A79B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2E73D2602DF41FE00047A79B /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2E73D1572DF41C720047A79B /* Alamofire in Frameworks */,
+				2E73D2612DF41FE00047A79B /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +70,7 @@
 			);
 			name = SampleInterviewSwiftUI;
 			packageProductDependencies = (
-				2E73D1562DF41C720047A79B /* Alamofire */,
+				2E73D2602DF41FE00047A79B /* Alamofire */,
 			);
 			productName = SampleInterviewSwiftUI;
 			productReference = 2E73D1052DF2BA0A0047A79B /* SampleInterviewSwiftUI.app */;
@@ -101,7 +101,7 @@
 			mainGroup = 2E73D0FC2DF2BA0A0047A79B;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				2E73D1552DF41C720047A79B /* XCRemoteSwiftPackageReference "Alamofire" */,
+				2E73D25F2DF41FE00047A79B /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2E73D1062DF2BA0A0047A79B /* Products */;
@@ -264,7 +264,6 @@
 				DEVELOPMENT_TEAM = P629TFF2W9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SampleInterviewSwiftUI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -294,7 +293,6 @@
 				DEVELOPMENT_TEAM = P629TFF2W9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SampleInterviewSwiftUI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -337,7 +335,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2E73D1552DF41C720047A79B /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		2E73D25F2DF41FE00047A79B /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -348,9 +346,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2E73D1562DF41C720047A79B /* Alamofire */ = {
+		2E73D2602DF41FE00047A79B /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2E73D1552DF41C720047A79B /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = 2E73D25F2DF41FE00047A79B /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
