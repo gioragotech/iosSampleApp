@@ -11,9 +11,11 @@ import Foundation
 struct ListItem: Identifiable {
     let id: String
     let title: String
+    let posterUrl: String?
+    let year: String
 }
 
-enum ViewEvent {
+enum ItemListViewEvent {
     case fetchItems
     case showDetails(String)
     case stopRefreshData
@@ -21,7 +23,7 @@ enum ViewEvent {
 
 class ItemsListViewModel: ObservableObject {
     @Published var state: ScreenState<[ListItem]> = .idle
-    let eventSubject = PassthroughSubject<ViewEvent, Never>()
+    let eventSubject = PassthroughSubject<ItemListViewEvent, Never>()
     let showDetails = PassthroughSubject<String, Never>()
     private var cancellables = Set<AnyCancellable>()
     private let repository: Repository
@@ -35,13 +37,15 @@ class ItemsListViewModel: ObservableObject {
             }.store(in: &cancellables)
     }
 
-    private func handleEvent(event: ViewEvent) {
+    private func handleEvent(event: ItemListViewEvent) {
         switch event {
         case .fetchItems:
+            self.state = .loading
             repository.getItems(withPolling: false).map({ itemsListDto in
                 itemsListDto.map({ itemDto in
                     ListItem(
-                        id: itemDto.id, title: itemDto.title)
+                        id: itemDto.id, title: itemDto.title,
+                        posterUrl: itemDto.poster, year: itemDto.year)
                 })
             }).receive(on: DispatchQueue.main).sink { [weak self] completion in
                 if case .failure(let error) = completion {

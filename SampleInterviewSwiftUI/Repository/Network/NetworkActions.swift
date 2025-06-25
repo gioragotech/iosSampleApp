@@ -29,7 +29,7 @@ class NetworkActionsImpl: NetworkActions {
     }
 
     func fetchMovie(id: String) -> AnyPublisher<ItemDetailsDto, any Error> {
-        AF.request("http://www.omdbapi.com/?i=tt5508566&apikey=af892786")
+        AF.request("http://www.omdbapi.com/?i=\(id)&apikey=af892786")
             .validate()
             .publishDecodable(type: ItemDetailsDto.self).value()
             .mapError { afError in

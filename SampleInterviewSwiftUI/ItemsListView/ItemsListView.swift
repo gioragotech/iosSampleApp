@@ -5,12 +5,11 @@
 //  Created by giora krasilshchik on 06/06/2025.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 struct ItemsListView: View {
     @StateObject private var viewModel: ItemsListViewModel
-    private var cancellables = Set<AnyCancellable>()
 
     init(viewModel: ItemsListViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -21,36 +20,85 @@ struct ItemsListView: View {
             switch viewModel.state {
             case .idle:
                 Text("Tap to load items.")
-            // Button("Load Items", action: viewModel.fetchItems)
             case .loading:
                 ProgressView("Loading...")
             case .loaded(let items):
-                List(items) { item in
-                    Button(action: {
-                        print("Tapped on: \(item.title)")
-                        viewModel.eventSubject.send(.showDetails(item.id))
-                    }) {
-                        HStack {
-                            Text(item.title)
-                            Spacer()
-                            Image(systemName: "chevron.right")
+                List(items, id: \.id) { item in
+                    MovieRowView(movie: item)
+                        .onTapGesture {
+                            viewModel.eventSubject.send(.showDetails(item.id))
                         }
-                    }
-                    .buttonStyle(PlainButtonStyle())
                 }
             case .empty:
                 Text("No items found")
             case .error(let message):
-                Text("Error:\(message)")
+                Text("Error: \(message)")
             }
-        }.onAppear {
+        }
+        .onAppear {
             viewModel.eventSubject.send(.fetchItems)
-        }.onDisappear {
+        }
+        .onDisappear {
             viewModel.eventSubject.send(.stopRefreshData)
         }
     }
 }
 
+struct MovieRowView: View {
+    let movie: ListItem
+
+    var body: some View {
+        HStack(spacing: 16) {
+            // Poster Image
+//            AsyncImage(url: URL(string: movie.posterUrl ?? "")) { phase in
+//                switch phase {
+//                case .empty:
+//                    ProgressView()
+//                        .frame(width: 80, height: 120)
+//                        .background(Color.gray.opacity(0.2))
+//                        .cornerRadius(8)
+//                case .success(let image):
+//                    image
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(width: 80, height: 120)
+//                        .clipped()
+//                        .cornerRadius(8)
+//                case .failure:
+//                    Rectangle()
+//                        .fill(Color.gray.opacity(0.3))
+//                        .frame(width: 80, height: 120)
+//                        .cornerRadius(8)
+//                        .overlay(
+//                            Image(systemName: "film")
+//                                .foregroundColor(.gray)
+//                        )
+//                @unknown default:
+//                    Rectangle()
+//                        .fill(Color.gray.opacity(0.3))
+//                        .frame(width: 80, height: 120)
+//                        .cornerRadius(8)
+//                }
+//            }
+
+            // Title and Subtitle
+            VStack(alignment: .leading, spacing: 4) {
+                Text(movie.title)
+                    .font(.headline)
+                    .lineLimit(2)
+                Text(movie.year)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+
+            Spacer()
+        }
+        .padding(.vertical, 8)
+    }
+}
+
 #Preview {
-    ItemsListView(viewModel: ItemsListViewModel(repsitory: MainRepository(networkActions: NetworkActionsImpl())))
+    ItemsListView(
+        viewModel: ItemsListViewModel(
+            repsitory: MainRepository(networkActions: NetworkActionsImpl())))
 }
