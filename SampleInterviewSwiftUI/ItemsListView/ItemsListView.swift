@@ -45,7 +45,7 @@ struct ItemsListView: View {
 }
 
 struct MovieRowView: View {
-    let movie: ListItem
+    let movie: ListItemViewModel
 
     var body: some View {
         HStack(spacing: 16) {

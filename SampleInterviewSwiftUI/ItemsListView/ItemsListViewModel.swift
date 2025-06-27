@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-struct ListItem: Identifiable {
+struct ListItemViewModel: Identifiable {
     let id: String
     let title: String
     let posterUrl: String?
@@ -22,7 +22,7 @@ enum ItemListViewEvent {
 }
 
 class ItemsListViewModel: ObservableObject {
-    @Published var state: ScreenState<[ListItem]> = .idle
+    @Published var state: ScreenState<[ListItemViewModel]> = .idle
     let eventSubject = PassthroughSubject<ItemListViewEvent, Never>()
     let showDetails = PassthroughSubject<String, Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -43,7 +43,7 @@ class ItemsListViewModel: ObservableObject {
         case .fetchItems:
             useCase.startPolling().map({ itemsListDto in
                 itemsListDto.map({ itemDto in
-                    ListItem(
+                    ListItemViewModel(
                         id: itemDto.id, title: itemDto.title,
                         posterUrl: itemDto.poster, year: itemDto.year)
                 })
