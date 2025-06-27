@@ -50,36 +50,36 @@ struct MovieRowView: View {
     var body: some View {
         HStack(spacing: 16) {
             // Poster Image
-//            AsyncImage(url: URL(string: movie.posterUrl ?? "")) { phase in
-//                switch phase {
-//                case .empty:
-//                    ProgressView()
-//                        .frame(width: 80, height: 120)
-//                        .background(Color.gray.opacity(0.2))
-//                        .cornerRadius(8)
-//                case .success(let image):
-//                    image
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(width: 80, height: 120)
-//                        .clipped()
-//                        .cornerRadius(8)
-//                case .failure:
-//                    Rectangle()
-//                        .fill(Color.gray.opacity(0.3))
-//                        .frame(width: 80, height: 120)
-//                        .cornerRadius(8)
-//                        .overlay(
-//                            Image(systemName: "film")
-//                                .foregroundColor(.gray)
-//                        )
-//                @unknown default:
-//                    Rectangle()
-//                        .fill(Color.gray.opacity(0.3))
-//                        .frame(width: 80, height: 120)
-//                        .cornerRadius(8)
-//                }
-//            }
+            AsyncImage(url: URL(string: movie.posterUrl ?? "")) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                        .frame(width: 80, height: 120)
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(8)
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 80, height: 120)
+                        .clipped()
+                        .cornerRadius(8)
+                case .failure:
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: 80, height: 120)
+                        .cornerRadius(8)
+                        .overlay(
+                            Image(systemName: "film")
+                                .foregroundColor(.gray)
+                        )
+                @unknown default:
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: 80, height: 120)
+                        .cornerRadius(8)
+                }
+            }
 
             // Title and Subtitle
             VStack(alignment: .leading, spacing: 4) {
@@ -100,5 +100,5 @@ struct MovieRowView: View {
 #Preview {
     ItemsListView(
         viewModel: ItemsListViewModel(
-            repsitory: MainRepository(networkActions: NetworkActionsImpl())))
+            useCase: PollJobUseCaseImpl(repository: MainRepository(networkActions: NetworkActionsImpl())))) 
 }

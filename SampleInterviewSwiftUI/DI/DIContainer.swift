@@ -50,6 +50,7 @@ extension DefaultDIContainer {
             MainRepository(networkActions: NetworkActionsImpl())
         }
         
+        
         // You can add more dependencies here as your app grows
         // container.register(SomeOtherService.self) {
         //     DefaultSomeOtherService()

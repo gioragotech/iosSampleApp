@@ -42,7 +42,7 @@ class AppCoordinator: ObservableObject {
         }
         
         let repository = container.resolve(Repository.self)
-        let viewModel = ItemsListViewModel(repsitory: repository)
+        let viewModel = ItemsListViewModel(useCase: PollJobUseCaseImpl(repository: repository))
         
         // Subscribe to navigation events from the view model
         viewModel.showDetails

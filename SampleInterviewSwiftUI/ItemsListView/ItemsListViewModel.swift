@@ -26,11 +26,11 @@ class ItemsListViewModel: ObservableObject {
     let eventSubject = PassthroughSubject<ItemListViewEvent, Never>()
     let showDetails = PassthroughSubject<String, Never>()
     private var cancellables = Set<AnyCancellable>()
-    private let repository: Repository
+    private let useCase: PollJobUseCase
 
-    init(repsitory: Repository) {
+    init(useCase: PollJobUseCase) {
         print("init ItemsListViewModel")
-        self.repository = repsitory
+        self.useCase = useCase
         eventSubject
             .sink { [weak self] event in
                 self?.handleEvent(event: event)
@@ -41,7 +41,7 @@ class ItemsListViewModel: ObservableObject {
         switch event {
         case .fetchItems:
             self.state = .loading
-            repository.getItems(withPolling: false).map({ itemsListDto in
+            useCase.startPolling().map({ itemsListDto in
                 itemsListDto.map({ itemDto in
                     ListItem(
                         id: itemDto.id, title: itemDto.title,
@@ -58,12 +58,12 @@ class ItemsListViewModel: ObservableObject {
         case .showDetails(let itemId):
             showDetails.send(itemId)
         case .stopRefreshData:
-            self.repository.stopPolling()
+            useCase.stopPolling()
         }
     }
 
     deinit {
         print("deinit ItemsListViewModel")
-        self.repository.stopPolling()
+        //self.repository.stopPolling()
     }
 }
