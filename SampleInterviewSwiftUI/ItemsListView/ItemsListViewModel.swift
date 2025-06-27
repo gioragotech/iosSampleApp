@@ -35,12 +35,12 @@ class ItemsListViewModel: ObservableObject {
             .sink { [weak self] event in
                 self?.handleEvent(event: event)
             }.store(in: &cancellables)
+        self.state = .loading
     }
 
     private func handleEvent(event: ItemListViewEvent) {
         switch event {
         case .fetchItems:
-            self.state = .loading
             useCase.startPolling().map({ itemsListDto in
                 itemsListDto.map({ itemDto in
                     ListItem(
@@ -64,6 +64,6 @@ class ItemsListViewModel: ObservableObject {
 
     deinit {
         print("deinit ItemsListViewModel")
-        //self.repository.stopPolling()
+        self.eventSubject.send(.stopRefreshData)
     }
 }
