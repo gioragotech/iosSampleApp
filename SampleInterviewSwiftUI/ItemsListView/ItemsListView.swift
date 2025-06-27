@@ -90,7 +90,6 @@ struct MovieRowView: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
-
             Spacer()
         }
         .padding(.vertical, 8)
