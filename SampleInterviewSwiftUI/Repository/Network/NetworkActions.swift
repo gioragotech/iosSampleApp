@@ -86,12 +86,31 @@ class NetworkActionsImpl: NetworkActions {
             } catch {
                 throw CustomError(description: error.localizedDescription)
             }
-        //        AF.request(APIRequest.getMovies).validate()
-        //            .publishDecodable(type: SearchResponse.self).value()
-        //            .mapError { afError in
-        //                CustomError(description: afError.localizedDescription)
-        //            }
-        //            .eraseToAnyPublisher()
+    }
+    
+    func fetchMoviesUsingURLSession() async throws -> [ItemDto] {
+        guard let url = URL(string: "https://your-api-endpoint.com/movies") else {
+            throw CustomError(description: "Invalid URL")
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        // Add headers if needed
+        // request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let httpResponse = response as? HTTPURLResponse,
+                  200..<300 ~= httpResponse.statusCode else {
+                throw CustomError(description: "Server error: \((response as? HTTPURLResponse)?.statusCode ?? -1)")
+            }
+
+            let decoded = try JSONDecoder().decode(SearchResponse.self, from: data)
+            return decoded.search
+        } catch {
+            throw CustomError(description: error.localizedDescription)
+        }
     }
 
     func fetchMovie(id: String) -> AnyPublisher<ItemDetailsDto, any Error> {
