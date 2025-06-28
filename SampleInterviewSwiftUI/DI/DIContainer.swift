@@ -44,11 +44,15 @@ class DefaultDIContainer: DIContainer {
 extension DefaultDIContainer {
     static func setup() -> DIContainer {
         let container = DefaultDIContainer()
+    
         
         // Register Repository
         container.register(Repository.self) {
-            MainRepository(networkActions: NetworkActionsImpl())
+            MainRepository(networkActions: NetworkActionsImpl(), dbActions: PersistenceController())
         }
+        
+        
+        
         
         
         // You can add more dependencies here as your app grows

@@ -102,5 +102,5 @@ struct ItemDetailsView: View {
     ItemDetailsView(
         viewModel: ItemDetailsViewModel(
             itemId: "sample-id",
-            repository: MainRepository(networkActions: NetworkActionsImpl())))
+            repository: MainRepository(networkActions: NetworkActionsImpl(), dbActions: PersistenceController(inMemory: true))))
 }

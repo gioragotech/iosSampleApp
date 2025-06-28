@@ -16,9 +16,11 @@ protocol Repository {
 class MainRepository: Repository {
     private var cancellable = Set<AnyCancellable>()
     let networkActions: NetworkActions
+    let dbActions: DbActions
 
-    init(networkActions: NetworkActions) {
+    init(networkActions: NetworkActions, dbActions: DbActions) {
         self.networkActions = networkActions
+        self.dbActions = dbActions
     }
     
     func getItems() async throws -> [ItemDto] {

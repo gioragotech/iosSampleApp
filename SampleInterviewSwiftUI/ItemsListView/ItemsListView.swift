@@ -99,5 +99,5 @@ struct MovieRowView: View {
 #Preview {
     ItemsListView(
         viewModel: ItemsListViewModel(
-            useCase: PollJobUseCaseImpl(repository: MainRepository(networkActions: NetworkActionsImpl())))) 
+            useCase: PollJobUseCaseImpl(repository: MainRepository(networkActions: NetworkActionsImpl(), dbActions: PersistenceController(inMemory: true))))) 
 }
