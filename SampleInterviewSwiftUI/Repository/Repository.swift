@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 protocol Repository {
-    func getItems() async throws -> [ItemDto]
+    func getItems() async  -> FetchResult<[ItemDto]>
     func getItem(id: String) -> AnyPublisher<ItemDetailsDto, Error>
 }
 
@@ -23,8 +23,8 @@ class MainRepository: Repository {
         self.dbActions = dbActions
     }
     
-    func getItems() async throws -> [ItemDto] {
-        return try await networkActions.fetchMovies()
+    func getItems() async -> FetchResult<[ItemDto]> {
+        return await networkActions.fetchMovies()
     }
     
     func getItem(id: String) -> AnyPublisher<ItemDetailsDto, Error> {

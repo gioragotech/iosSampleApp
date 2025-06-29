@@ -5,14 +5,13 @@
 //  Created by giora krasilshchik on 27/06/2025.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 protocol PollJobUseCase {
     func startPolling() -> AnyPublisher<[ItemDto], Error>
     func stopPolling()
 }
-
 
 class PollJobUseCaseImpl: PollJobUseCase {
     private let repository: Repository
@@ -22,26 +21,26 @@ class PollJobUseCaseImpl: PollJobUseCase {
     init(repository: Repository) {
         self.repository = repository
     }
-    
-    func startPolling() -> AnyPublisher<[ItemDto], Error>  {
+
+    func startPolling() -> AnyPublisher<[ItemDto], Error> {
         self.pollingTask?.cancel()
         self.pollingTask = Task {
             while !Task.isCancelled {
-                do {
-                    let result = try await repository.getItems()
+                let result = await repository.getItems()
+                switch result {
+                case .failure(let message, let code):
+                    subject.send(
+                        completion: .failure(CustomError(description: message)))
+                case .success(let result):
                     subject.send(result)
-                } catch  {
-                    subject.send(completion: .failure(error))
                 }
-               
-              
-                try? await Task.sleep(nanoseconds: 10_000_000_000)
+                try? await Task.sleep(for: .seconds(10))
             }
         }
-        
+
         return subject.eraseToAnyPublisher()
     }
-    
+
     func stopPolling() {
         self.pollingTask?.cancel()
         pollingTask = nil
